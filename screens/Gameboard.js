@@ -3,35 +3,19 @@ import styles from '../style/style';
 import Header from './Header';
 import Footer from './Footer';
 import { useState, useEffect } from 'react';
-import {
-    NBR_OF_DICES,
-    NBR_OF_THROWS,
-    MIN_SPOT,
-    MAX_SPOT,
-    BONUS_POINTS_LIMIT,
-    BONUS_POINTS
-} from '../constants/Game';
+import { NBR_OF_DICES, NBR_OF_THROWS, MAX_SPOT } from '../constants/Game';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { Container, Row, Col } from 'react-native-flex-grid'
+import { Container, Row, Col } from 'react-native-flex-grid';
 
-let board = []
+let board = [];
 
-
-export default Gameboard = ({ navigation, route }) => {
-
-
+export default function Gameboard({ navigation, route }) {
     const [nbrOfThrowsLeft, setNbrOfThrowsLeft] = useState(NBR_OF_THROWS);
-    const [nbrOfDicesLeft, setNbrOfDicesLeft] = useState(NBR_OF_DICES);
     const [status, setStatus] = useState('Throw dices..');
-    const [gameEndStatus, setGameEndStatus] = useState(false);
-    // Mitkä arpakuutioista ovat valittuina
     const [selectedDices, setSelectedDices] = useState(new Array(NBR_OF_DICES).fill(false));
-    // Arpakuutioiden silmäluvut
     const [diceSpots, setDiceSpots] = useState(new Array(NBR_OF_DICES).fill(0));
-    // Mitkä arpakuutioiden silmäluvuista on valittu pisteisiin
-    const [selectedDicePoints, setSelectedDicePoints] = useState(new Array(MAX_SPOT).fill(0));
-    // Valittujen arpakuutioiden kokonaispistemäärät
-    const [dicePointsTotal, setDicePointsTotal] = useState(new Array(MAX_SPOT).fill(0));
+    const [selectedDicePoints, setSelectedDicePoints] = useState(new Array(MAX_SPOT).fill(false));
+    const [scores, setScores] = useState(new Array(MAX_SPOT).fill(0));
     const [playerName, setPlayerName] = useState('');
 
     useEffect(() => {
@@ -40,135 +24,101 @@ export default Gameboard = ({ navigation, route }) => {
         }
     }, []);
 
-    // tässä luodaan arpakuutiorivi sarakkeittain
-    const dicesRow = [];
-    for (let dice = 0; dice < NBR_OF_DICES; dice++) {
-    dicesRow.push(
-    <Col key={"dice" + dice}>
-    <Pressable
-    key={"row" + dice}
-    onPress={() => chooseDice(dice)}>
-    <MaterialCommunityIcons
-    name={board[dice]}
-    key={"dice" + dice}
-    size={50}
-    color={getDiceColor(dice)}>
-    </MaterialCommunityIcons>
-    </Pressable>
-    </Col>
-    );
-    }
-
-    // Tässä luodaan pisterivi sarakkeittain (Col)
-    const pointsRow = [];
-for (let spot = 0; spot < MAX_SPOT; spot++) {
-pointsRow.push(
-<Col key={"pointsRow" + spot}>
-<Text key={"pointsRow" + spot}>
-
-</Text>
-</Col>
-);
-}
-
-    // tässä luodaan rivi, joka kertoo onko pisteet jo valittu silmäluvulle
-    const pointsToSelectRow = [];
-    for (let diceButton = 0; diceButton < MAX_SPOT; diceButton++) {
-    pointsToSelectRow.push(
-    <Col key={"buttonsRow" + diceButton}>
-    <Pressable key={"buttonsRow" + diceButton}
-    onPress={() => chooseDicePoints(diceButton)}>
-    <MaterialCommunityIcons
-    name={"numeric-" + (diceButton + 1) + "-circle"}
-    key={"buttonsRow" + diceButton}
-    size={35}
-    color={getDicePointsColor(diceButton)}>
-    </MaterialCommunityIcons>
-    </Pressable>
-    </Col>
-    );
-    }
+    const throwDices = () => {
+        if (nbrOfThrowsLeft > 0) {
+            let spots = [...diceSpots];
+            for (let i = 0; i < NBR_OF_DICES; i++) {
+                if (!selectedDices[i]) {
+                    let randomNumber = Math.floor(Math.random() * 6 + 1);
+                    board[i] = 'dice-' + randomNumber;
+                    spots[i] = randomNumber;
+                }
+            }
+            setDiceSpots(spots);
+            setNbrOfThrowsLeft(nbrOfThrowsLeft - 1);
+            setStatus(nbrOfThrowsLeft === 1 ? 'Last throw! Select your points after this.' : 'Select dices or roll again');
+        } else {
+            setStatus('No throws left. Please select your points.');
+        }
+    };
 
     const chooseDice = (i) => {
-        if (nbrOfThrowsLeft < NBR_OF_THROWS && !gameEndStatus) {
         let dices = [...selectedDices];
-        dices[i] = selectedDices[i] ? false : true;
+        dices[i] = !selectedDices[i];
         setSelectedDices(dices);
-        }
-        else {
-        setStatus('Roll dice first');
-        }
-    }
+    };
 
     const chooseDicePoints = (i) => {
-        if (nbrOfThrowsLeft === 0) {
-        let selectedPoints = [...selectedDicePoints];
-        let points = [...dicePointsTotal];
-        if (!selectedPoints[i]) {
+        if (!selectedDicePoints[i] && nbrOfThrowsLeft === 0) {
+            const count = diceSpots.filter(spot => spot === i + 1).length;
+            const points = count * (i + 1);
+
+            // Update scores
+            let newScores = [...scores];
+            newScores[i] = points;
+            setScores(newScores);
+
+            let selectedPoints = [...selectedDicePoints];
             selectedPoints[i] = true;
-            let nbrOfDices = diceSpots.reduce((total, x) => (x === i + 1 ? total + 1 : total), 0);
-            points[i] = nbrOfDices * (i + 1);   
-            
-        }
-        else {
-            setStatus("You already selected points for spot "  (i + 1));
-            return points [i];
-        }
-        setDicePointsTotal(points);
-        setSelectedDicePoints(selectedPoints);
-        return points[i];
-    }
-    else {
-        setStatus("Throw" + NBR_OF_THROWS + "times before settings points.");
-    }
-    }
-        
-        function getDiceColor(i) {
-        return selectedDices[i] ? "black" : "steelblue";
-        }
+            setSelectedDicePoints(selectedPoints);
+            setStatus(`You scored ${points} points for spot ${i + 1}`);
 
-        function getDicePointsColor(i) {
-            return selectedDicePoints[i] && !gameEndStatus ? "black" : "steelblue";
+            // Reset for next round
+            setNbrOfThrowsLeft(NBR_OF_THROWS);
+            setSelectedDices(new Array(NBR_OF_DICES).fill(false));
+            setDiceSpots(new Array(NBR_OF_DICES).fill(0));
+            board = [];
+
+            // Check if all slots are filled to end the game
+            if (selectedPoints.every(Boolean)) {
+                setStatus('Game over! All points selected.');
             }
+        } else if (selectedDicePoints[i]) {
+            setStatus(`You already selected points for spot ${i + 1}`);
+        } else {
+            setStatus('Use all rolls before selecting points.');
+        }
+    };
 
-    const throwDices = () => {
-        let spots = [...diceSpots];
-        for (let i = 0; i < NBR_OF_DICES; i++) {
-        if (!selectedDices[i]) {
-        let randomNumber = Math.floor(Math.random() * 6 + 1);
-        board[i] = 'dice-' + randomNumber;
-        spots[i] = randomNumber;
-        }
-        }
-        setNbrOfThrowsLeft(nbrOfThrowsLeft-1);
-        setDiceSpots(spots);
-        setStatus('Select dices or roll again');
-        }
+    const dicesRow = Array.from({ length: NBR_OF_DICES }, (_, i) => (
+        <Col key={"dice" + i}>
+            <Pressable onPress={() => chooseDice(i)}>
+                <MaterialCommunityIcons
+                    name={board[i]}
+                    size={50}
+                    color={selectedDices[i] ? "black" : "steelblue"}
+                />
+            </Pressable>
+        </Col>
+    ));
+
+    const pointsRow = Array.from({ length: MAX_SPOT }, (_, i) => (
+        <Col key={"pointsRow" + i}>
+            <Pressable onPress={() => chooseDicePoints(i)}>
+                <Text style={styles.pointText}>{i + 1}</Text>
+            </Pressable>
+            <Text style={styles.scoreText}>{scores[i] > 0 ? scores[i] : '-'}</Text>
+        </Col>
+    ));
 
     return (
         <>
             <Header />
-            <View>
+            <View style={styles.gameboardContainer}>
                 <Container>
                     <Row>{dicesRow}</Row>
                 </Container>
-                <Text>Rolls left: {nbrOfThrowsLeft}</Text>
-                <Text>{status}</Text>
-                <Pressable
-                    onPress={() => throwDices()}>
-                    <Text>ROLL DICE</Text>
+                <Text style={styles.infoText}>Rolls left: {nbrOfThrowsLeft}</Text>
+                <Text style={styles.statusText}>{status}</Text>
+                <Pressable style={styles.rollButton} onPress={throwDices}>
+                    <Text style={styles.buttonText}>ROLL DICE</Text>
                 </Pressable>
-                <Text>Player: {playerName}</Text>
+                <Text style={styles.playerText}>Player: {playerName}</Text>
                 <Container>
                     <Row>{pointsRow}</Row>
                 </Container>
-                <Container>
-                    <Row>{pointsToSelectRow}</Row>
-                </Container>
-                
             </View>
             <Footer />
         </>
-    )
+    );
 }
-
