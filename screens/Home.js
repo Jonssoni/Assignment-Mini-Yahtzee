@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Text, View, TextInput, Pressable, Keyboard } from 'react-native';
+import { Text, View, TextInput, Pressable, Keyboard, ScrollView } from 'react-native';
 import styles from '../style/style';
 import Header from './Header';
 import Footer from './Footer';
@@ -27,48 +27,49 @@ export default Home = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <Header />
-            <MaterialCommunityIcons name='information' size={30} color='steelblue' />
+        
             {!hasPlayerName ? (
-              <>
-              <Text style={styles.inputLabel}>For scoreboard, enter your name:</Text>
-              <TextInput
-                  style={styles.input}
-                  onChangeText={setPlayerName}
-                  autoFocus={true}
-                  placeholder="Enter your name"
-                  placeholderTextColor="#999" // Placeholder text color
-              />
-              <Pressable style={styles.button} onPress={() => handlePlayerName(playerName)}>
-                  <Text style={styles.buttonText}>OK</Text>
-              </Pressable>
-          </>
-          
-            ) : (
-                <View style={styles.rulesContainer}>
-                    <Text style={styles.rulesTitle}>Rules of the Game</Text>
-                    <Text style={styles.rulesSectionTitle}>THE GAME:</Text>
-                    <Text style={styles.rulesText}>
-                        - You have {NBR_OF_DICES} dice and {NBR_OF_THROWS} throws per turn.
-                        {'\n'}- Keep dice to achieve matching counts.
-                        {'\n'}- Select points between {MIN_SPOT} and {MAX_SPOT} at the end of your turn.
-                        {'\n'}- The order of selection is free.
-                    </Text>
-                    <Text style={styles.rulesSectionTitle}>POINTS:</Text>
-                    <Text style={styles.rulesText}>
-                        - Only the dice with matching counts contribute to your score.
-                        {'\n'}- You cannot select the same points again from {MIN_SPOT} to {MAX_SPOT}.
-                    </Text>
-                    <Text style={styles.rulesSectionTitle}>GOAL:</Text>
-                    <Text style={styles.rulesText}>
-                        - Aim to score as many points as possible.
-                        {'\n'}- {BONUS_POINTS_LIMIT} points is the limit for a bonus, granting you {BONUS_POINTS} additional points.
-                    </Text>
-                    <Text style={styles.goodLuckText}>Good luck, {playerName}!</Text>
-                    <Pressable style={styles.button}
-                        onPress={() => navigation.navigate('Gameboard', { player: playerName })}>
-                        <Text style={styles.buttonText}>PLAY</Text>
+                <>
+                    <Text style={styles.inputLabel}>For scoreboard, enter your name:</Text>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={setPlayerName}
+                        autoFocus={true}
+                        placeholder="Enter your name"
+                        placeholderTextColor="#999"
+                    />
+                    <Pressable style={styles.button} onPress={() => handlePlayerName(playerName)}>
+                        <Text style={styles.buttonText}>OK</Text>
                     </Pressable>
-                </View>
+                </>
+            ) : (
+                <ScrollView contentContainerStyle={styles.scrollContainer}>
+                    <View style={styles.rulesContainer}>
+                        <Text style={styles.rulesTitle}>Rules of the Game</Text>
+                        <Text style={styles.rulesSectionTitle}>THE GAME:</Text>
+                        <Text style={styles.rulesText}>
+                            - You have {NBR_OF_DICES} dice and {NBR_OF_THROWS} throws per turn.
+                            {'\n'}- Keep dice to achieve matching counts.
+                            {'\n'}- Select points between {MIN_SPOT} and {MAX_SPOT} at the end of your turn.
+                            {'\n'}- The order of selection is free.
+                        </Text>
+                        <Text style={styles.rulesSectionTitle}>POINTS:</Text>
+                        <Text style={styles.rulesText}>
+                            - Only the dice with matching counts contribute to your score.
+                            {'\n'}- You cannot select the same points again from {MIN_SPOT} to {MAX_SPOT}.
+                        </Text>
+                        <Text style={styles.rulesSectionTitle}>GOAL:</Text>
+                        <Text style={styles.rulesText}>
+                            - Aim to score as many points as possible.
+                            {'\n'}- {BONUS_POINTS_LIMIT} points is the limit for a bonus, granting you {BONUS_POINTS} additional points.
+                        </Text>
+                        <Text style={styles.goodLuckText}>Good luck, {playerName}!</Text>
+                        <Pressable style={styles.button}
+                            onPress={() => navigation.navigate('Gameboard', { player: playerName })}>
+                            <Text style={styles.buttonText}>PLAY</Text>
+                        </Pressable>
+                    </View>
+                </ScrollView>
             )}
             <Footer />
         </View>

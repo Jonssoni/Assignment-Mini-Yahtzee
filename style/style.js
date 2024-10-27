@@ -4,77 +4,78 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center', // Center horizontally
-    justifyContent: 'center', // Center vertically
-    padding: 20, // Optional padd
+    paddingTop: 60, // Space for the fixed header height
+    paddingBottom: 60, // Space for the fixed footer height
+    alignItems: 'center',
+    justifyContent: 'center',
+},
   
+header: {
+  position: 'absolute', // Position header at the top of the screen
+  top: 0,
+  width: '100%',
+  height: 60,
+  backgroundColor: '#4ECDC4', // Set a background color
+  justifyContent: 'center',
+  alignItems: 'center',
+  elevation: 5,
+  shadowOffset: {
+    width: 0,
+    height: 2,
   },
-  header: {
-    width: '100%', // Full width
-    height: 60, // Fixed height
-    backgroundColor: '#4ECDC4', // Vibrant background color
-    justifyContent: 'center', // Center text vertically
-    alignItems: 'center', // Center text horizontally
-    elevation: 5, // Shadow for Android
-    shadowColor: '#000', // Shadow for iOS
-    shadowOffset: {
-        width: 0,
-        height: 2,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    paddingTop: 10, // Add padding for better spacing
-    borderBottomLeftRadius: 15, // Rounded corners
-    borderBottomRightRadius: 15,
-  },
-
-  title: {
-    color: '#ffffff', // White text for contrast
-        fontWeight: 'bold',
-        fontSize: 24, // Increased font size
-  },
-  footer: {
-    width: '100%', // Full width
-    height: 60, // Fixed height
-    backgroundColor: '#4ECDC4', // Consistent background color with the header
-    justifyContent: 'center', // Center text vertically
-    alignItems: 'center', // Center text horizontally
-    elevation: 5, // Shadow for Android
-    shadowColor: '#000', // Shadow for iOS
-    shadowOffset: {
-        width: 0,
-        height: -2, // Slightly raised shadow
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    position: 'absolute', // Fixed at the bottom
-    bottom: 0,
+  shadowOpacity: 0.3,
+  shadowRadius: 4,
+  paddingTop: 10,
+  zIndex: 10, // Ensure it layers above other elements
 },
 
-author: {
+
+title: {
   color: '#ffffff', // White text for contrast
-  fontSize: 16, // Font size for the author
-  fontStyle: 'italic', // Italic style for emphasis
+  fontWeight: 'bold',
+  fontSize: 24,
 },
+
+footer: {
+  width: '100%',
+  height: 60,
+  backgroundColor: '#4ECDC4',
+  justifyContent: 'center',
+  alignItems: 'center',
+  position: 'absolute',
+  bottom: 0,
+  elevation: 5,
+  shadowColor: '#000',
+  shadowOffset: {
+      width: 0,
+      height: -2,
+  },
+  shadowOpacity: 0.3,
+  shadowRadius: 4,
+},
+  author: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontStyle: 'italic',
+  },
   gameboard: {
     flex: 1,
-    backgroundColor: '#EAF6F6', // Soft background color
+    backgroundColor: '#EAF6F6',
     alignItems: 'center',
     justifyContent: 'flex-start',
     padding: 20,
-    borderTopLeftRadius: 20, // Rounded corners
+    borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     marginTop: 10,
-},
-
-gameinfo: {
-    backgroundColor: '#ffffff', // White background for info sections
-    borderRadius: 15, // Rounded corners
+  },
+  gameinfo: {
+    backgroundColor: '#ffffff',
+    borderRadius: 15,
     padding: 15,
     shadowColor: '#000',
     shadowOffset: {
-        width: 0,
-        height: 1,
+      width: 0,
+      height: 1,
     },
     shadowOpacity: 0.2,
     shadowRadius: 2,
@@ -82,162 +83,179 @@ gameinfo: {
     textAlign: 'center',
     fontSize: 20,
     marginVertical: 10,
-},
-
+  },
   row: {
     marginTop: 20,
-    padding: 10
+    padding: 10,
   },
   flex: {
-    flexDirection: "row"
+    flexDirection: 'row',
   },
   button: {
     margin: 30,
     padding: 15,
-    backgroundColor: "#4ECDC4", // Change to a more vibrant color
-    borderRadius: 25, // More pronounced rounding
+    backgroundColor: '#4ECDC4',
+    borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000', // Add shadow effect
+    shadowColor: '#000',
     shadowOffset: {
-        width: 0,
-        height: 2,
+      width: 0,
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5, // For Android shadow
-},
-buttonText: {
-    color: "#ffffff", // White text for contrast
+    elevation: 5,
+  },
+  buttonText: {
+    color: '#ffffff',
     fontSize: 18,
     fontWeight: 'bold',
-},
-rulesContainer: {
-  backgroundColor: '#ffffff',
-  borderRadius: 15,
-  padding: 20,
-  marginVertical: 20,
-  shadowColor: '#000',
-  shadowOffset: {
+  },
+  rulesContainer: {
+    backgroundColor: '#ffffff',
+    borderRadius: 30,
+    padding: 5,
+    margin: 5,
+    marginVertical: 20,
+    shadowColor: '#000',
+    shadowOffset: {
       width: 0,
       height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 3,
   },
-  shadowOpacity: 0.2,
-  shadowRadius: 2,
-  elevation: 3,
-},
-
-rulesTitle: {
-  fontSize: 24,
-  fontWeight: 'bold',
-  marginBottom: 10,
-  textAlign: 'center',
-  color: '#2B2B52',
-},
-
-rulesSectionTitle: {
-  fontSize: 20,
-  fontWeight: 'bold',
-  marginTop: 15,
-  color: '#4ECDC4',
-},
-
-rulesText: {
-  fontSize: 16,
-  marginBottom: 10,
-  lineHeight: 24,
-  color: '#333',
-},
-
-goodLuckText: {
-  fontSize: 18,
-  fontWeight: 'bold',
-  marginTop: 20,
-  textAlign: 'center',
-  color: '#2B2B52',
-},
-inputLabel: {
-  fontSize: 18,
-  marginBottom: 10, // Space between label and input
-  color: '#333', // Dark text color
-  textAlign: 'center', // Center the label
-},
-
-input: {
-  height: 50, // Fixed height for input
-  borderColor: '#4ECDC4', // Border color
-  borderWidth: 2, // Border width
-  borderRadius: 10, // Rounded edges
-  paddingLeft: 15, // Padding for text inside input
-  marginBottom: 20, // Space between input and button
-  fontSize: 16, // Font size for input text
-  color: '#333', // Text color
-  backgroundColor: '#fff', // White background for input
-  shadowColor: '#000', // Shadow for input
-  shadowOffset: {
+  rulesTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
+    color: '#2B2B52',
+  },
+  rulesSectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 15,
+    color: '#4ECDC4',
+  },
+  rulesText: {
+    fontSize: 15,
+    marginBottom: 10,
+    lineHeight: 24,
+    color: '#333',
+  },
+  goodLuckText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 20,
+    textAlign: 'center',
+    color: '#2B2B52',
+  },
+  inputLabel: {
+    fontSize: 18,
+    marginBottom: 10,
+    color: '#333',
+    textAlign: 'center',
+  },
+  input: {
+    height: 50,
+    borderColor: '#4ECDC4',
+    borderWidth: 2,
+    borderRadius: 10,
+    paddingLeft: 15,
+    marginBottom: 20,
+    fontSize: 16,
+    color: '#333',
+    backgroundColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: {
       width: 0,
       height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 2,
   },
-  shadowOpacity: 0.2,
-  shadowRadius: 2,
-  elevation: 2, // Elevation for Android shadow
-},
-gameboardContainer: {
-  flex: 1,
-  alignItems: 'center',
-  justifyContent: 'center',
-  padding: 20,
-  backgroundColor: '#f5f5f5',
-},
-diceButton: {
-  padding: 10,
-  margin: 5,
-  borderRadius: 15,
-  backgroundColor: 'white',
-  shadowColor: '#000',
-  shadowOffset: {
+  gameboardContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+    backgroundColor: '#f5f5f5',
+  },
+  diceButton: {
+    padding: 10,
+    margin: 5,
+    borderRadius: 15,
+    backgroundColor: 'white',
+    shadowColor: '#000',
+    shadowOffset: {
       width: 0,
       height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 2,
   },
-  shadowOpacity: 0.2,
-  shadowRadius: 3,
-  elevation: 2,
-},
-infoText: {
-  fontSize: 18,
-  color: '#333',
-  marginVertical: 10,
-},
-statusText: {
-  fontSize: 16,
-  color: 'orange',
-  marginBottom: 20,
-},
-rollButton: {
-  padding: 15,
-  backgroundColor: '#4ECDC4',
-  borderRadius: 10,
-  alignItems: 'center',
-  marginVertical: 20,
-  shadowColor: '#000',
-  shadowOffset: {
+  infoText: {
+    fontSize: 18,
+    color: '#333',
+    marginVertical: 10,
+  },
+  statusText: {
+    fontSize: 16,
+    color: 'orange',
+    marginBottom: 20,
+  },
+  rollButton: {
+    padding: 15,
+    backgroundColor: '#4ECDC4',
+    borderRadius: 10,
+    alignItems: 'center',
+    marginVertical: 20,
+    shadowColor: '#000',
+    shadowOffset: {
       width: 0,
       height: 2,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 5,
   },
-  shadowOpacity: 0.3,
-  shadowRadius: 3,
-  elevation: 5,
+  playerText: {
+    fontSize: 20,              // Font size for player text
+    color: '#333',             // Text color
+    marginTop: 50,             // Increase space above the player text
+    textAlign: 'center',       // Center the text horizontally
+    fontWeight: 'bold',        // Make the text bold
+    padding: 10,               // Add padding around the text
+    backgroundColor: '#EAF6F6', // Optional: add a background color
+    borderRadius: 10,          // Optional: round the corners
+    shadowColor: '#000',       // Optional: shadow for depth
+    shadowOffset: {            // Optional: shadow offset
+        width: 0,
+        height: 1,
+    },
+    shadowOpacity: 0.2,        // Optional: shadow opacity
+    shadowRadius: 2,           // Optional: shadow blur radius
+    elevation: 3,              // Optional: elevation for Android shadow
 },
-buttonText: {
-  color: '#fff',
-  fontSize: 18,
-  fontWeight: 'bold',
+
+
+pointsCell: {
+  backgroundColor: '#f0f0f0', // Light background color
+  borderRadius: 10, // Rounded corners
+  padding:5, // Padding around the text
+  marginVertical: 30, // Space between rows
+  alignItems: 'center', // Center content
 },
-playerText: {
-  fontSize: 18,
-  color: '#333',
-  marginTop: 10,
+totalPointsText: {
+  fontSize: 20, // Font size for total points
+  fontWeight: 'bold', // Bold text
+  marginTop: 30, // Space above the total points text
+  textAlign: 'center', // Center the text
+  color: '#4ECDC4', // Color for total points text
 },
 });
-
-

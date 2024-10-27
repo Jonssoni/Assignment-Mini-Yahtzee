@@ -72,12 +72,22 @@ export default function Gameboard({ navigation, route }) {
             // Check if all slots are filled to end the game
             if (selectedPoints.every(Boolean)) {
                 setStatus('Game over! All points selected.');
+                goToScoreboard(); // Call to navigate to the scoreboard
             }
         } else if (selectedDicePoints[i]) {
             setStatus(`You already selected points for spot ${i + 1}`);
         } else {
             setStatus('Use all rolls before selecting points.');
         }
+    };
+
+    // New function to navigate to Scoreboard
+    const goToScoreboard = () => {
+        const totalPoints = scores.reduce((acc, score) => acc + score, 0); // Calculate total points
+        navigation.navigate('Scoreboard', {
+            playerName: playerName,
+            totalPoints: totalPoints,
+        });
     };
 
     const dicesRow = Array.from({ length: NBR_OF_DICES }, (_, i) => (
@@ -94,12 +104,13 @@ export default function Gameboard({ navigation, route }) {
 
     const pointsRow = Array.from({ length: MAX_SPOT }, (_, i) => (
         <Col key={"pointsRow" + i}>
-            <Pressable onPress={() => chooseDicePoints(i)}>
+            <Pressable onPress={() => chooseDicePoints(i)} style={styles.pointsCell}>
                 <Text style={styles.pointText}>{i + 1}</Text>
+                <Text style={styles.scoreText}>{scores[i] > 0 ? scores[i] : '-'}</Text>
             </Pressable>
-            <Text style={styles.scoreText}>{scores[i] > 0 ? scores[i] : '-'}</Text>
         </Col>
     ));
+    
 
     return (
         <>
