@@ -25,7 +25,7 @@ export default function Gameboard({ navigation, route }) {
             setPlayerName(route.params.player);
         }
 
-        // Load previous scores if available
+        
         if (route.params?.previousScores) {
             setScores(route.params.previousScores);
         }
@@ -45,7 +45,7 @@ export default function Gameboard({ navigation, route }) {
             for (let i = 0; i < NBR_OF_DICES; i++) {
                 if (!selectedDices[i]) {
                     let randomNumber = Math.floor(Math.random() * 6 + 1);
-                    board[i] = 'dice-' + randomNumber; // Assuming you have dice images named 'dice-1' to 'dice-6'
+                    board[i] = 'dice-' + randomNumber; 
                     spots[i] = randomNumber;
                 }
             }
@@ -64,37 +64,29 @@ export default function Gameboard({ navigation, route }) {
     };
 
     const chooseDicePoints = (i) => {
-        // Check if points can be selected
         if (nbrOfThrowsLeft === 0) {
             if (!selectedDicePoints[i]) {
-                const count = diceSpots.filter(spot => spot === i + 1).length; // Count how many times the point is rolled
-                const points = count * (i + 1); // Calculate the score based on the count
+                const count = diceSpots.filter(spot => spot === i + 1).length; 
+                const points = count * (i + 1); 
     
-                // Update scores
                 let newScores = [...scores];
                 newScores[i] = points;
                 setScores(newScores);
     
                 let selectedPoints = [...selectedDicePoints];
-                selectedPoints[i] = true; // Mark the point as selected
+                selectedPoints[i] = true; 
                 setSelectedDicePoints(selectedPoints);
                 setStatus(`You scored ${points} points for spot ${i + 1}`);
     
-                // Check for the bonus
-                if (points === 63) {
-                    const bonus = 50;
-                    const totalPoints = scores.reduce((acc, score) => acc + score, 0) + bonus;
-                    setScores((prevScores) => prevScores.map((score, idx) => (idx === i ? score + bonus : score))); // Add bonus to the score
-                    setStatus(`You also received a bonus of ${bonus} points for scoring 63! Total points: ${totalPoints}`);
-                }
-    
-                // Reset the game state for the new round
                 resetForNewRound();
     
-                // Check if all slots are filled to end the game
+                // Calculate the updated total score here
+                const totalPoints = newScores.reduce((acc, score) => acc + score, 0);
                 if (selectedPoints.every(Boolean)) {
+                    // Check if bonus applies and navigate to Scoreboard
+                    const finalScore = totalPoints >= 63 ? totalPoints + 50 : totalPoints;
                     setStatus('Game over! All points selected.');
-                    goToScoreboard(); // Navigate to the scoreboard
+                    goToScoreboard(finalScore); 
                 }
             } else {
                 setStatus(`You already selected points for spot ${i + 1}`);
@@ -104,15 +96,13 @@ export default function Gameboard({ navigation, route }) {
         }
     };
     
-
-    const goToScoreboard = () => {
-        const totalPoints = scores.reduce((acc, score) => acc + score, 0);
-        const finalScore = totalPoints > 63 ? totalPoints + 50 : totalPoints; // Add 50 if totalPoints > 63
+    const goToScoreboard = (totalScore) => {
         navigation.navigate('Scoreboard', {
             playerName: playerName,
-            totalPoints: finalScore, // Pass the final score to the scoreboard
+            totalPoints: totalScore, 
         });
     };
+    
 
     const resetGameState = () => {
         setNbrOfThrowsLeft(NBR_OF_THROWS);

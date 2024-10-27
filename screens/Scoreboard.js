@@ -4,26 +4,26 @@ import Footer from './Footer';
 import { useState, useEffect } from 'react';
 
 export default function Scoreboard({ route, navigation }) {
-    const { playerName, totalPoints } = route.params || {}; // Safely access parameters
+    const { playerName, totalPoints } = route.params || {}; 
 
     const [scores, setScores] = useState([]);
 
-    // Load scores from the route parameters when the component mounts
+    
     useEffect(() => {
         if (playerName && totalPoints !== undefined) {
-            // Append new score to existing scores
+            
             setScores(prevScores => [...prevScores, { name: playerName, points: totalPoints }]);
         }
     }, [playerName, totalPoints]);
 
-    // Filter and sort scores in descending order
+    
     const validScores = scores.filter(score => score.points > 0);
     const sortedScores = [...validScores].sort((a, b) => b.points - a.points);
 
     const restartGame = () => {
         navigation.navigate('Gameboard', {
-            resetGame: true, // Pass a flag to indicate game reset
-            player: playerName, // Optionally pass player name
+            resetGame: true, 
+            player: playerName, 
         });
     };
 
@@ -32,7 +32,7 @@ export default function Scoreboard({ route, navigation }) {
             <Header />
             <View style={styles.scoreboardContainer}>
                 <Text style={styles.title}>Scoreboard</Text>
-                {/* Header for the scoreboard */}
+             
                 <View style={styles.header}>
                     <Text style={styles.headerText}>Placement</Text>
                     <Text style={styles.headerText}>Name</Text>
@@ -40,7 +40,7 @@ export default function Scoreboard({ route, navigation }) {
                 </View>
                 <FlatList
                     data={sortedScores}
-                    keyExtractor={(item, index) => `${item.name}-${item.points}-${index}`} // Ensure unique keys
+                    keyExtractor={(item, index) => `${item.name}-${item.points}-${index}`} 
                     renderItem={({ item, index }) => (
                         <View style={styles.scoreItem}>
                             <Text style={styles.rankText}>{index + 1}</Text>
@@ -107,9 +107,11 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     restartButtonText: {
-        fontSize: 18,
+        fontSize: 20,
+        fontWeight:'bold',
         color: 'steelblue',
         textAlign: 'center',
         marginVertical: 20,
+        
     },
 });

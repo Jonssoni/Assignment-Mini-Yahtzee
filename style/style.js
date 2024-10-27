@@ -4,18 +4,18 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: 60, // Space for the fixed header height
-    paddingBottom: 60, // Space for the fixed footer height
+    paddingTop: 60, 
+    paddingBottom: 60, 
     alignItems: 'center',
     justifyContent: 'center',
 },
   
 header: {
-  position: 'absolute', // Position header at the top of the screen
+  position: 'absolute', 
   top: 0,
   width: '100%',
   height: 60,
-  backgroundColor: '#4ECDC4', // Set a background color
+  backgroundColor: '#4ECDC4', 
   justifyContent: 'center',
   alignItems: 'center',
   elevation: 5,
@@ -26,12 +26,12 @@ header: {
   shadowOpacity: 0.3,
   shadowRadius: 4,
   paddingTop: 10,
-  zIndex: 10, // Ensure it layers above other elements
+  zIndex: 10, 
 },
 
 
 title: {
-  color: '#ffffff', // White text for contrast
+  color: '#ffffff', 
   fontWeight: 'bold',
   fontSize: 24,
 },
@@ -77,7 +77,7 @@ author: {
   button: {
     margin: 30,
     padding: 15,
-    backgroundColor: '#4ECDC4',
+    backgroundColor: '#d1965a',
     borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
@@ -99,7 +99,7 @@ author: {
   },
   rulesContainer: {
     flex:1,
-    backgroundColor: 'yellow',
+    backgroundColor: '#f3fac3',
     borderRadius: 30,
     padding: 5,
     margin: 5,
@@ -178,7 +178,6 @@ author: {
     padding: 10,
     margin: 5,
     borderRadius: 15,
-    backgroundColor: 'white',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -200,7 +199,7 @@ author: {
   },
   rollButton: {
     padding: 15,
-    backgroundColor: '#4ECDC4',
+    backgroundColor: '#d1965a',
     borderRadius: 10,
     alignItems: 'center',
     marginVertical: 20,
@@ -214,37 +213,37 @@ author: {
     elevation: 5,
   },
   playerText: {
-    fontSize: 20,              // Font size for player text
-    color: '#333',             // Text color
-    marginTop: 50,             // Increase space above the player text
-    textAlign: 'center',       // Center the text horizontally
-    fontWeight: 'bold',        // Make the text bold
-    padding: 10,               // Add padding around the text
-    backgroundColor: '#EAF6F6', // Optional: add a background color
-    borderRadius: 10,          // Optional: round the corners
-    shadowColor: '#000',       // Optional: shadow for depth
-    shadowOffset: {            // Optional: shadow offset
+    fontSize: 20,             
+    color: '#333',             
+    marginTop: 50,           
+    textAlign: 'center',    
+    fontWeight: 'bold',        
+    padding: 10,             
+    backgroundColor: '#EAF6F6', 
+    borderRadius: 10,          
+    shadowColor: '#000',     
+    shadowOffset: {           
         width: 0,
         height: 1,
     },
-    shadowOpacity: 0.2,        // Optional: shadow opacity
-    shadowRadius: 2,           // Optional: shadow blur radius
-    elevation: 3,              // Optional: elevation for Android shadow
+    shadowOpacity: 0.2,        
+    shadowRadius: 2,          
+    elevation: 3,              
 },
 
 
 pointsCell: {
-  backgroundColor: '#f0f0f0', // Light background color
-  borderRadius: 10, // Rounded corners
-  padding:5, // Padding around the text
-  marginVertical: 30, // Space between rows
-  alignItems: 'center', // Center content
+  backgroundColor: '#f0f0f0', 
+  borderRadius: 10, 
+  padding:5, 
+  marginVertical: 30, 
+  alignItems: 'center', 
 },
 totalPointsText: {
-  fontSize: 20, // Font size for total points
-  fontWeight: 'bold', // Bold text
-  marginTop: 30, // Space above the total points text
-  textAlign: 'center', // Center the text
-  color: '#4ECDC4', // Color for total points text
+  fontSize: 20,
+  fontWeight: 'bold', 
+  marginTop: 30, 
+  textAlign: 'center', 
+  color: '#4ECDC4', 
 },
 });

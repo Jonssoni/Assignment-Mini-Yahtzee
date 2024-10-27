@@ -3,7 +3,6 @@ import { Text, View, TextInput, Pressable, Keyboard, ScrollView } from 'react-na
 import styles from '../style/style';
 import Header from './Header';
 import Footer from './Footer';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
     NBR_OF_DICES,
     NBR_OF_THROWS,
@@ -27,23 +26,21 @@ export default Home = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <Header />
-        
+
             {!hasPlayerName ? (
-              <>
-              
-              <Text style={styles.inputLabel}>For scoreboard, enter your name:</Text>
-              <TextInput
-                  style={styles.input}
-                  onChangeText={setPlayerName}
-                  autoFocus={true}
-                  placeholder="Enter your name"
-                  placeholderTextColor="#999" // Placeholder text color
-              />
-              <Pressable style={styles.button} onPress={() => handlePlayerName(playerName)}>
-                  <Text style={styles.buttonText}>OK</Text>
-              </Pressable>
-          </>
-          
+                <>
+                    <Text style={styles.inputLabel}>For scoreboard, enter your name:</Text>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={setPlayerName}
+                        autoFocus={true}
+                        placeholder="Enter your name"
+                        placeholderTextColor="#999" // Placeholder text color
+                    />
+                    <Pressable style={styles.button} onPress={() => handlePlayerName(playerName)}>
+                        <Text style={styles.buttonText}>Next</Text>
+                    </Pressable>
+                </>
             ) : (
                 <View style={styles.rulesContainer}>
                     <Text style={styles.rulesTitle}>Rules of the Game</Text>
@@ -70,8 +67,9 @@ export default Home = ({ navigation }) => {
                         <Text style={styles.buttonText}>PLAY</Text>
                     </Pressable>
                 </View>
+                
             )}
-            <Footer />
+           
         </View>
     );
 };

@@ -34,7 +34,7 @@ export default function App() {
               ?  'view-list' 
                : 'view-list-outline';
             }
-            return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
+            return <MaterialCommunityIcons name={iconName} size={size} color={color} />
           },
           tabBarActiveTintColor: 'steelblue',
           tabBarInactiveTintColor: 'gray',
