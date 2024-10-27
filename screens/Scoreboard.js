@@ -1,110 +1,115 @@
-import { Text, View, Pressable, StyleSheet } from 'react-native';
-import { useState, useEffect } from 'react';
+import { Text, View, StyleSheet, FlatList, Pressable } from 'react-native';
 import Header from './Header';
 import Footer from './Footer';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SCOREBOARD_KEY } from '../constants/Game';
+import { useState, useEffect } from 'react';
 
-export default function Scoreboard({ navigation }) {
+export default function Scoreboard({ route, navigation }) {
+    const { playerName, totalPoints } = route.params || {}; // Safely access parameters
+
     const [scores, setScores] = useState([]);
-    const [totalPoints, setTotalPoints] = useState(0);
-    const [playerName, setPlayerName] = useState('');
 
+    // Load scores from the route parameters when the component mounts
     useEffect(() => {
-        const loadScores = async () => {
-            const savedScores = await AsyncStorage.getItem(SCOREBOARD_KEY);
-            if (savedScores) {
-                const parsedScores = JSON.parse(savedScores);
-                setScores(parsedScores);
+        if (playerName && totalPoints !== undefined) {
+            // Append new score to existing scores
+            setScores(prevScores => [...prevScores, { name: playerName, points: totalPoints }]);
+        }
+    }, [playerName, totalPoints]);
 
-                const total = parsedScores.reduce((acc, score) => acc + score.points, 0);
-                setTotalPoints(total);
-            }
-        };
+    // Filter and sort scores in descending order
+    const validScores = scores.filter(score => score.points > 0);
+    const sortedScores = [...validScores].sort((a, b) => b.points - a.points);
 
-        loadScores();
-    }, []);
-
-    const gotoGameboard = () => {
-        navigation.navigate('Gameboard', { playerName, scores });
+    const restartGame = () => {
+        navigation.navigate('Gameboard', {
+            resetGame: true, // Pass a flag to indicate game reset
+            player: playerName, // Optionally pass player name
+        });
     };
 
     return (
-        <>
+        <View style={styles.container}>
             <Header />
             <View style={styles.scoreboardContainer}>
                 <Text style={styles.title}>Scoreboard</Text>
-                <View style={styles.table}>
-                    {scores.map((score, index) => (
-                        <View key={index} style={styles.tableRow}>
-                            <Text style={styles.rankText}>{index + 1}</Text>
-                            <Text style={styles.playerText}>{score.playerName}</Text>
-                            <Text style={styles.pointsText}>{score.points}</Text>
-                        </View>
-                    ))}
+                {/* Header for the scoreboard */}
+                <View style={styles.header}>
+                    <Text style={styles.headerText}>Placement</Text>
+                    <Text style={styles.headerText}>Name</Text>
+                    <Text style={styles.headerText}>Score</Text>
                 </View>
-                <Text style={styles.totalPointsText}>Total Points: {totalPoints}</Text>
-                <Pressable style={styles.restartButton} onPress={gotoGameboard}>
-                    <Text style={styles.buttonText}>Restart Game</Text>
-                </Pressable>
+                <FlatList
+                    data={sortedScores}
+                    keyExtractor={(item, index) => `${item.name}-${item.points}-${index}`} // Ensure unique keys
+                    renderItem={({ item, index }) => (
+                        <View style={styles.scoreItem}>
+                            <Text style={styles.rankText}>{index + 1}</Text>
+                            <Text style={styles.nameText}>{item.name}</Text>
+                            <Text style={styles.pointsText}>{item.points}</Text>
+                        </View>
+                    )}
+                />
             </View>
+            <Pressable onPress={restartGame}>
+                <Text style={styles.restartButtonText}>Restart Game</Text>
+            </Pressable>
             <Footer />
-        </>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
     scoreboardContainer: {
         flex: 1,
         padding: 20,
-        backgroundColor: '#f5f5f5',
     },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
-        textAlign: 'center',
         marginBottom: 20,
     },
-    table: {
-        marginBottom: 20,
-        backgroundColor: '#ffffff',
-        borderRadius: 8,
-        overflow: 'hidden',
-    },
-    tableRow: {
+    header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: 10,
+        marginBottom: 10,
+        borderBottomWidth: 2,
+        borderBottomColor: '#ccc',
+        paddingBottom: 5,
+    },
+    headerText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        flex: 1,
+        textAlign: 'center',
+    },
+    scoreItem: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+        paddingVertical: 10,
         borderBottomWidth: 1,
-        borderBottomColor: '#ddd',
+        borderBottomColor: '#ccc',
     },
     rankText: {
         fontSize: 18,
-        width: 30,
+        fontWeight: 'bold',
     },
-    playerText: {
+    nameText: {
         fontSize: 18,
         flex: 1,
+        textAlign: 'center',
     },
     pointsText: {
         fontSize: 18,
-        width: 50,
-        textAlign: 'right',
-    },
-    totalPointsText: {
-        fontSize: 20,
         fontWeight: 'bold',
-        marginTop: 10,
     },
-    restartButton: {
-        padding: 10,
-        backgroundColor: '#4ECDC4',
-        borderRadius: 5,
-        alignItems: 'center',
-        marginTop: 20,
-    },
-    buttonText: {
-        color: '#ffffff',
+    restartButtonText: {
         fontSize: 18,
+        color: 'steelblue',
+        textAlign: 'center',
+        marginVertical: 20,
     },
 });
