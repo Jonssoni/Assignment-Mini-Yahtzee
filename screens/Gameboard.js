@@ -1,9 +1,9 @@
-import { Text, View, StyleSheet, Pressable } from 'react-native';
+import { Text, View, StyleSheet, Pressable, Animated, Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import styles from '../style/style';
 import Header from './Header';
 import Footer from './Footer';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { NBR_OF_DICES, NBR_OF_THROWS, MAX_SPOT } from '../constants/Game';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Container, Row, Col } from 'react-native-flex-grid';
@@ -20,12 +20,14 @@ export default function Gameboard({ navigation, route }) {
     const [scores, setScores] = useState(new Array(MAX_SPOT).fill(0));
     const [playerName, setPlayerName] = useState('');
 
+    // Animation state for roll button
+    const scaleAnim = useRef(new Animated.Value(1)).current;
+
     useEffect(() => {
         if (playerName === '' && route.params?.player) {
             setPlayerName(route.params.player);
         }
 
-        
         if (route.params?.previousScores) {
             setScores(route.params.previousScores);
         }
@@ -39,7 +41,24 @@ export default function Gameboard({ navigation, route }) {
         }, [route.params?.resetGame])
     );
 
+    const animateButton = () => {
+        Animated.sequence([
+            Animated.timing(scaleAnim, {
+                toValue: 1.1,
+                duration: 200,
+                useNativeDriver: true,
+            }),
+            Animated.timing(scaleAnim, {
+                toValue: 1,
+                duration: 200,
+                useNativeDriver: true,
+            }),
+        ]).start();
+    };
+
     const throwDices = () => {
+        animateButton(); // Trigger the animation
+
         if (nbrOfThrowsLeft > 0) {
             let spots = [...diceSpots];
             for (let i = 0; i < NBR_OF_DICES; i++) {
@@ -66,24 +85,34 @@ export default function Gameboard({ navigation, route }) {
     const chooseDicePoints = (i) => {
         if (nbrOfThrowsLeft === 0) {
             if (!selectedDicePoints[i]) {
-                const count = diceSpots.filter(spot => spot === i + 1).length; 
-                const points = count * (i + 1); 
+                const count = diceSpots.filter(spot => spot === i + 1).length;
+                const points = count > 0 ? count * (i + 1) : 0;
     
                 let newScores = [...scores];
                 newScores[i] = points;
                 setScores(newScores);
     
                 let selectedPoints = [...selectedDicePoints];
-                selectedPoints[i] = true; 
+                selectedPoints[i] = true;
                 setSelectedDicePoints(selectedPoints);
                 setStatus(`You scored ${points} points for spot ${i + 1}`);
     
                 resetForNewRound();
     
-                // Calculate the updated total score here
+                // Calculate the updated total score
                 const totalPoints = newScores.reduce((acc, score) => acc + score, 0);
+    
+                // Trigger alert if bonus threshold (e.g., 63) is reached
+                if (totalPoints >= 63) {
+                    Alert.alert(
+                        'Bonus Achieved!',
+                        'Congratulations! You earned a 50-point bonus!',
+                        [{ text: 'OK' }]
+                    );
+                }
+    
                 if (selectedPoints.every(Boolean)) {
-                    // Check if bonus applies and navigate to Scoreboard
+                    // Apply bonus points and navigate to Scoreboard
                     const finalScore = totalPoints >= 63 ? totalPoints + 50 : totalPoints;
                     setStatus('Game over! All points selected.');
                     goToScoreboard(finalScore); 
@@ -102,7 +131,6 @@ export default function Gameboard({ navigation, route }) {
             totalPoints: totalScore, 
         });
     };
-    
 
     const resetGameState = () => {
         setNbrOfThrowsLeft(NBR_OF_THROWS);
@@ -137,7 +165,13 @@ export default function Gameboard({ navigation, route }) {
 
     const pointsRow = Array.from({ length: MAX_SPOT }, (_, i) => (
         <Col key={"pointsRow" + i}>
-            <Pressable onPress={() => chooseDicePoints(i)} style={styles.pointsCell}>
+            <Pressable 
+                onPress={() => chooseDicePoints(i)} 
+                style={[
+                    styles.pointsCell, 
+                    selectedDicePoints[i] && styles.selectedPointsCell // Apply selected style if true
+                ]}
+            >
                 <Text style={styles.pointText}>{i + 1}</Text>
                 <Text style={styles.scoreText}>{scores[i] > 0 ? scores[i] : '-'}</Text>
             </Pressable>
@@ -153,14 +187,18 @@ export default function Gameboard({ navigation, route }) {
                 </Container>
                 <Text style={styles.infoText}>Rolls left: {nbrOfThrowsLeft}</Text>
                 <Text style={styles.statusText}>{status}</Text>
-                <Pressable style={styles.rollButton} onPress={throwDices}>
-                    <Text style={styles.buttonText}>ROLL DICE</Text>
-                </Pressable>
+               
                 <Text style={styles.playerText}>Player: {playerName}</Text>
                 <Container>
                     <Row>{pointsRow}</Row>
                 </Container>
+                <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+                    <Pressable style={styles.rollButton} onPress={throwDices}>
+                        <Text style={styles.buttonText}>ROLL DICES</Text>
+                    </Pressable>
+                </Animated.View>
             </View>
             <Footer />
         </>
-)};
+    );
+};

@@ -8,17 +8,18 @@ export default function Scoreboard({ route, navigation }) {
 
     const [scores, setScores] = useState([]);
 
-    
     useEffect(() => {
         if (playerName && totalPoints !== undefined) {
-            
             setScores(prevScores => [...prevScores, { name: playerName, points: totalPoints }]);
         }
     }, [playerName, totalPoints]);
 
-    
+    // Filter and sort scores
     const validScores = scores.filter(score => score.points > 0);
     const sortedScores = [...validScores].sort((a, b) => b.points - a.points);
+
+    // Limit to top 5 scores
+    const topScores = sortedScores.slice(0, 5);
 
     const restartGame = () => {
         navigation.navigate('Gameboard', {
@@ -32,14 +33,13 @@ export default function Scoreboard({ route, navigation }) {
             <Header />
             <View style={styles.scoreboardContainer}>
                 <Text style={styles.title}>Scoreboard</Text>
-             
                 <View style={styles.header}>
                     <Text style={styles.headerText}>Placement</Text>
                     <Text style={styles.headerText}>Name</Text>
                     <Text style={styles.headerText}>Score</Text>
                 </View>
                 <FlatList
-                    data={sortedScores}
+                    data={topScores} // Use the topScores array
                     keyExtractor={(item, index) => `${item.name}-${item.points}-${index}`} 
                     renderItem={({ item, index }) => (
                         <View style={styles.scoreItem}>
@@ -108,10 +108,9 @@ const styles = StyleSheet.create({
     },
     restartButtonText: {
         fontSize: 20,
-        fontWeight:'bold',
+        fontWeight: 'bold',
         color: 'steelblue',
         textAlign: 'center',
         marginVertical: 20,
-        
     },
 });
