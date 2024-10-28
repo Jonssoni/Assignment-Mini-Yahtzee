@@ -19,8 +19,8 @@ export default function Gameboard({ navigation, route }) {
     const [selectedDicePoints, setSelectedDicePoints] = useState(new Array(MAX_SPOT).fill(false));
     const [scores, setScores] = useState(new Array(MAX_SPOT).fill(0));
     const [playerName, setPlayerName] = useState('');
-
-    // Animation state for roll button
+    const [bonusAchieved, setBonusAchieved] = useState(false);
+  
     const scaleAnim = useRef(new Animated.Value(1)).current;
 
     useEffect(() => {
@@ -57,7 +57,7 @@ export default function Gameboard({ navigation, route }) {
     };
 
     const throwDices = () => {
-        animateButton(); // Trigger the animation
+        animateButton(); 
 
         if (nbrOfThrowsLeft > 0) {
             let spots = [...diceSpots];
@@ -99,23 +99,23 @@ export default function Gameboard({ navigation, route }) {
     
                 resetForNewRound();
     
-                // Calculate the updated total score
                 const totalPoints = newScores.reduce((acc, score) => acc + score, 0);
     
-                // Trigger alert if bonus threshold (e.g., 63) is reached
-                if (totalPoints >= 63) {
+              
+                if (totalPoints >= 63 && !bonusAchieved) {
                     Alert.alert(
                         'Bonus Achieved!',
                         'Congratulations! You earned a 50-point bonus!',
                         [{ text: 'OK' }]
                     );
+                    setBonusAchieved(true); 
                 }
     
                 if (selectedPoints.every(Boolean)) {
-                    // Apply bonus points and navigate to Scoreboard
+                   
                     const finalScore = totalPoints >= 63 ? totalPoints + 50 : totalPoints;
                     setStatus('Game over! All points selected.');
-                    goToScoreboard(finalScore); 
+                    goToScoreboard(finalScore);
                 }
             } else {
                 setStatus(`You already selected points for spot ${i + 1}`);
@@ -140,6 +140,7 @@ export default function Gameboard({ navigation, route }) {
         setScores(new Array(MAX_SPOT).fill(0));
         setPlayerName(route.params?.player || '');
         setStatus('Throw dices..');
+        setBonusAchieved(false);
         board = [];
     };
 
@@ -169,7 +170,7 @@ export default function Gameboard({ navigation, route }) {
                 onPress={() => chooseDicePoints(i)} 
                 style={[
                     styles.pointsCell, 
-                    selectedDicePoints[i] && styles.selectedPointsCell // Apply selected style if true
+                    selectedDicePoints[i] && styles.selectedPointsCell 
                 ]}
             >
                 <Text style={styles.pointText}>{i + 1}</Text>
@@ -177,6 +178,9 @@ export default function Gameboard({ navigation, route }) {
             </Pressable>
         </Col>
     ));
+
+    const totalPoints = scores.reduce((acc, score) => acc + score, 0);
+
 
     return (
         <>
@@ -187,8 +191,8 @@ export default function Gameboard({ navigation, route }) {
                 </Container>
                 <Text style={styles.infoText}>Rolls left: {nbrOfThrowsLeft}</Text>
                 <Text style={styles.statusText}>{status}</Text>
+    
                
-                <Text style={styles.playerText}>Player: {playerName}</Text>
                 <Container>
                     <Row>{pointsRow}</Row>
                 </Container>
@@ -197,6 +201,10 @@ export default function Gameboard({ navigation, route }) {
                         <Text style={styles.buttonText}>ROLL DICES</Text>
                     </Pressable>
                 </Animated.View>
+    
+              
+                <Text style={styles.totalPointsText}>Total Points: {totalPoints}</Text>
+                <Text style={styles.playerText}>Player: {playerName}</Text>
             </View>
             <Footer />
         </>

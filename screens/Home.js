@@ -25,17 +25,18 @@ export default Home = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <Header />
+           
 
             {!hasPlayerName ? (
                 <>
+                    <Text style={styles.yahzeetext}>Mini-Yahzee</Text>
                     <Text style={styles.inputLabel}>For scoreboard, enter your name:</Text>
                     <TextInput
                         style={styles.input}
                         onChangeText={setPlayerName}
                         autoFocus={true}
                         placeholder="Enter your name"
-                        placeholderTextColor="#999" // Placeholder text color
+                        placeholderTextColor="#999" 
                     />
                     <Pressable style={styles.button} onPress={() => handlePlayerName(playerName)}>
                         <Text style={styles.buttonText}>Next</Text>
@@ -62,7 +63,7 @@ export default Home = ({ navigation }) => {
                         {'\n'}- {BONUS_POINTS_LIMIT} points is the limit for a bonus, granting you {BONUS_POINTS} additional points.
                     </Text>
                     <Text style={styles.goodLuckText}>Good luck, {playerName}!</Text>
-                    <Pressable style={styles.button}
+                    <Pressable style={styles.button1}
                         onPress={() => navigation.navigate('Gameboard', { player: playerName })}>
                         <Text style={styles.buttonText}>PLAY</Text>
                     </Pressable>

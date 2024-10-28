@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#e6e1e1',
     paddingTop: 60,
     paddingBottom: 60,
     alignItems: 'center',
@@ -16,7 +16,6 @@ export default StyleSheet.create({
     width: '100%',
     height: 60,
     backgroundColor: '#4A4A4A', 
-    justifyContent: 'center',
     alignItems: 'center',
     elevation: 5,
     shadowOffset: {
@@ -25,10 +24,9 @@ export default StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 6,
-    paddingTop: 15,
+    paddingTop: 10,
     zIndex: 10,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
+
   },
 
   title: {
@@ -51,8 +49,7 @@ export default StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 6,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    
   },
 
   author: {
@@ -60,17 +57,6 @@ export default StyleSheet.create({
     fontSize: 18,
     fontStyle: 'italic',
     letterSpacing: 0.8,
-  },
-
-  gameboard: {
-    flex: 1,
-    backgroundColor: '#F7F9FC',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    padding: 20,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    marginTop: 10,
   },
 
   row: {
@@ -83,8 +69,25 @@ export default StyleSheet.create({
   },
 
   button: {
-    margin: 25,
-    padding: 15,
+    margin: 20,
+    padding: 10,
+    width:180,
+    backgroundColor: '#d1965a', 
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  button1: {
+    margin: 20,
+    padding: 5,
     backgroundColor: '#d1965a', 
     borderRadius: 25,
     justifyContent: 'center',
@@ -150,7 +153,7 @@ export default StyleSheet.create({
 
   inputLabel: {
     fontSize: 18,
-    marginBottom: 10,
+    marginBottom: 20,
     color: '#333',
     textAlign: 'center',
   },
@@ -158,8 +161,8 @@ export default StyleSheet.create({
   input: {
     height: 50,
     width: 200,
-    borderColor: '#4ECDC4',
-    borderWidth: 1,
+    borderColor: '#d1965a',
+    borderWidth: 2,
     borderRadius: 10,
     paddingLeft: 15,
     marginBottom: 20,
@@ -180,8 +183,8 @@ export default StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
-    backgroundColor: '#f5f5f5',
+    padding: 10,
+    backgroundColor: '#e6e1e1',
   },
 
   rollButton: {
@@ -218,7 +221,7 @@ export default StyleSheet.create({
 
   statusText: {
     fontSize: 16,
-    color: '#FF5722', // Updated to a vibrant coral for status
+    color: '#FF5722',
     marginBottom: 20,
   },
 
@@ -250,14 +253,25 @@ export default StyleSheet.create({
   },
 
   totalPointsText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginTop: 30,
+    fontSize: 18,
+    color: 'steelblue',
     textAlign: 'center',
-    color: '#4ECDC4',
-  },
+    marginTop: 10,
+},
 
   selectedPointsCell: {
     backgroundColor: '#8de880',
+  },
+  yahzeetext: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#8B4513', 
+    textShadowColor: '#000000',
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 3,
+    letterSpacing: 1.5,
+    textAlign: 'center',
+    fontFamily: 'serif', 
+    marginBottom:40
   },
 });

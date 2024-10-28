@@ -14,11 +14,11 @@ export default function Scoreboard({ route, navigation }) {
         }
     }, [playerName, totalPoints]);
 
-    // Filter and sort scores
+   
     const validScores = scores.filter(score => score.points > 0);
     const sortedScores = [...validScores].sort((a, b) => b.points - a.points);
 
-    // Limit to top 5 scores
+   
     const topScores = sortedScores.slice(0, 5);
 
     const restartGame = () => {
@@ -39,7 +39,7 @@ export default function Scoreboard({ route, navigation }) {
                     <Text style={styles.headerText}>Score</Text>
                 </View>
                 <FlatList
-                    data={topScores} // Use the topScores array
+                    data={topScores} 
                     keyExtractor={(item, index) => `${item.name}-${item.points}-${index}`} 
                     renderItem={({ item, index }) => (
                         <View style={styles.scoreItem}>
