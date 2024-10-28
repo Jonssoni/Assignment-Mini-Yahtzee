@@ -44,7 +44,7 @@ export default function Gameboard({ navigation, route }) {
     const animateButton = () => {
         Animated.sequence([
             Animated.timing(scaleAnim, {
-                toValue: 1.1,
+                toValue: 1.2,
                 duration: 200,
                 useNativeDriver: true,
             }),
@@ -157,8 +157,8 @@ export default function Gameboard({ navigation, route }) {
             <Pressable onPress={() => chooseDice(i)}>
                 <MaterialCommunityIcons
                     name={board[i]}
-                    size={50}
-                    color={selectedDices[i] ? "black" : "steelblue"}
+                    size={60}
+                    color={selectedDices[i] ? "black" : "grey"}
                 />
             </Pressable>
         </Col>
